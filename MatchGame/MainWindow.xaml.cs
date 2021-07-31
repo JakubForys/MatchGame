@@ -23,6 +23,7 @@ namespace MatchGame
         DispatcherTimer timer = new DispatcherTimer();
         int tenthsOfSecondsElapsed;
         int matchesFound;
+        static int gameCounter;
 
         public MainWindow()
         {
@@ -45,6 +46,7 @@ namespace MatchGame
 
         private void SetUpGame()
         {
+            gameCounter++;
             List<string> animalEmoji = new List<string>()
             {
                 "🐶", "🐶",
@@ -56,16 +58,37 @@ namespace MatchGame
                 "🐴", "🐴",
                 "🐔", "🐔",
             };
+            List<string> animalEmoji_1 = new List<string>()
+            {
+                "🐂", "🐂",
+                "🐫", "🐫",
+                "🦘", "🦘",
+                "🐐", "🐐",
+                "🐄", "🐄",
+                "🐈", "🐈",
+                "🦔", "🦔",
+                "🐎", "🐎",
+            };
             Random random = new Random();
             foreach (TextBlock textBlock in mainGrid.Children.OfType<TextBlock>())
             {
-                if (textBlock.Name != "timeTextBlock")
+                if (textBlock.Name != "timeTextBlock" && textBlock.Name != "scoreBlock")
                 {
                     textBlock.Visibility = Visibility.Visible;
-                    int index = random.Next(animalEmoji.Count);
-                    string nextEmoji = animalEmoji[index];
-                    textBlock.Text = nextEmoji;
-                    animalEmoji.RemoveAt(index);
+                    if (gameCounter % 2 == 0)
+                    {
+                        int index = random.Next(animalEmoji.Count);
+                        string nextEmoji = animalEmoji[index];
+                        textBlock.Text = nextEmoji;
+                        animalEmoji.RemoveAt(index);
+                    }
+                    else
+                    {
+                        int index = random.Next(animalEmoji_1.Count);
+                        string nextEmoji = animalEmoji_1[index];
+                        textBlock.Text = nextEmoji;
+                        animalEmoji_1.RemoveAt(index);
+                    }
                 }
             };
             timer.Start();
@@ -433,6 +456,16 @@ namespace MatchGame
             {
                 SetUpGame();
             }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void scoreBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
